@@ -3,14 +3,15 @@ import userEvent from '@testing-library/user-event';
 import { createAgent } from '@ui-sdk/react/agent';
 import { expect, test } from 'vitest';
 import { App } from './App';
-import { resources } from './resources';
+import { resources } from './content.server';
+import { renderToString } from 'react-dom/server';
 
 const agent = createAgent();
 const count = (category: string) => resources.filter((resource) => resource.category === category).length;
 
 test('search, category selection, clearing, and empty-state reset change the rendered collection', async () => {
   const user = userEvent.setup();
-  render(<App />);
+  render(<App resources={resources} />);
   expect(screen.getAllByRole('listitem')).toHaveLength(resources.length);
   await user.click(screen.getByRole('radio', { name: /^Tools / }));
   expect(screen.getAllByRole('listitem')).toHaveLength(count('tools'));
@@ -29,7 +30,7 @@ test('search, category selection, clearing, and empty-state reset change the ren
 test('a shared URL restores filters and keyboard arrows change category', async () => {
   history.replaceState(null, '', '/?category=libraries&q=react');
   const user = userEvent.setup();
-  render(<App />);
+  render(<App resources={resources} />);
   expect((screen.getByRole('searchbox') as HTMLInputElement).value).toBe('react');
   expect(screen.getByRole('heading', { name: 'Lenso UI' })).toBeTruthy();
   expect(screen.queryByRole('heading', { name: 'ViteHub Kit' })).toBeNull();
@@ -46,7 +47,7 @@ test('a shared URL restores filters and keyboard arrows change category', async 
 
 test('theme changes are visible and persist, and the search shortcut focuses the search field', async () => {
   const user = userEvent.setup();
-  render(<App />);
+  render(<App resources={resources} />);
   await user.click(screen.getByRole('button', { name: 'Toggle color theme' }));
   expect(document.documentElement.dataset.theme).toBe('dark');
   expect(localStorage.getItem('awesome-ui-sdk-theme')).toBe('dark');
@@ -57,7 +58,7 @@ test('theme changes are visible and persist, and the search shortcut focuses the
 });
 
 test('the agent can find named controls and search, select a category, change the theme, and reset', async () => {
-  render(<App />);
+  render(<App resources={resources} />);
   const snapshot = agent.snapshot().filter((entry) => !entry.offPage && entry.component !== 'more');
   for (const entry of snapshot) expect(entry.label).toBeTruthy();
   expect(snapshot.map((entry) => entry.label)).toEqual(expect.arrayContaining(['Search resources', 'Resource category', 'Toggle color theme']));
@@ -86,4 +87,16 @@ test('the agent can find named controls and search, select a category, change th
   });
   expect(result).toMatchObject({ ok: true });
   expect(screen.getAllByRole('listitem')).toHaveLength(resources.length);
+});
+
+test('server HTML includes every curated resource without browser initialization', () => {
+  history.replaceState(null, '', '/?q=missing-resource&category=tools');
+  const html = renderToString(<App resources={resources} />);
+  const document = new DOMParser().parseFromString(html, 'text/html');
+  expect(document.querySelectorAll('.resource-row')).toHaveLength(resources.length);
+  for (const resource of resources) {
+    expect([...document.querySelectorAll('.resource-info a')].some((link) => link.getAttribute('href') === resource.url && link.textContent === resource.name)).toBe(true);
+    expect(document.body.textContent).toContain(resource.description);
+  }
+  expect(document.querySelector('input[type="search"]')?.getAttribute('value')).toBe('');
 });

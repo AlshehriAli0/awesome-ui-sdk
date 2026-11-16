@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
-import { categories, filterResources, parseResources, resources } from './resources';
+import { categories, filterResources, parseResources } from './resources';
+import { resources } from './content.server';
 
 test('the collection includes the supplied ecosystem projects once, with valid links', () => {
   expect(resources.length).toBeGreaterThan(0);
@@ -21,10 +22,10 @@ test('only curated category entries become resources; supporting links stay with
 });
 
 test('search combines words, ignores case and whitespace, and intersects with the category', () => {
-  expect(filterResources('  REACT   stylex ', 'all').map((resource) => resource.name)).toEqual(['Lenso UI']);
-  expect(filterResources('agent', 'tools').map((resource) => resource.name)).toEqual(['UI SDK Agent Inspector']);
-  expect(filterResources('lenso', 'tools')).toEqual([]);
+  expect(filterResources(resources, '  REACT   stylex ', 'all').map((resource) => resource.name)).toEqual(['Lenso UI']);
+  expect(filterResources(resources, 'agent', 'tools').map((resource) => resource.name)).toEqual(['UI SDK Agent Inspector']);
+  expect(filterResources(resources, 'lenso', 'tools')).toEqual([]);
   for (const category of categories) {
-    expect(filterResources('   ', category.id).every((resource) => resource.category === category.id)).toBe(true);
+    expect(filterResources(resources, '   ', category.id).every((resource) => resource.category === category.id)).toBe(true);
   }
 });

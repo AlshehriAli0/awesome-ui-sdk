@@ -6,20 +6,24 @@ on:
     paths:
       - README.md
       - website/**
+      - app/**
       - package.json
       - bun.lock
       - tsconfig.json
-      - vite.config.ts
+      - vitest.config.ts
+      - next-env.d.ts
       - vercel.json
       - .github/workflows/website.yml
   pull_request:
     paths:
       - README.md
       - website/**
+      - app/**
       - package.json
       - bun.lock
       - tsconfig.json
-      - vite.config.ts
+      - vitest.config.ts
+      - next-env.d.ts
       - vercel.json
       - .github/workflows/website.yml
   workflow_dispatch:

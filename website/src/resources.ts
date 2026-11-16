@@ -1,5 +1,3 @@
-import readme from '../../README.md?raw';
-
 export const categories = [
   { id: 'libraries', label: 'Libraries', heading: 'Component libraries' },
   { id: 'tools', label: 'Tools', heading: 'Tools' },
@@ -46,9 +44,7 @@ export function parseResources(markdown: string): Resource[] {
   return resources;
 }
 
-export const resources = parseResources(readme);
-
-export function filterResources(query: string, category: Category | 'all') {
+export function filterResources(resources: Resource[], query: string, category: Category | 'all') {
   const words = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
   return resources.filter((resource) => {
     const categoryName = headingForCategory.get(resource.category);

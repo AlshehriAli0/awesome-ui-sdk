@@ -1,9 +1,11 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@ui-sdk/react/button';
 import { Input, InputClear, InputGroup } from '@ui-sdk/react/input';
 import { SegmentedControl, SegmentedControlItem } from '@ui-sdk/react/segmented-control';
 import { useShortcut } from '@ui-sdk/react/shortcuts';
-import { categories, filterResources, resources, type Category } from './resources';
+import { categories, filterResources, type Category, type Resource } from './resources';
 import { ResourceList } from './ResourceList';
 
 const repository = 'https://github.com/LioRael/awesome-ui-sdk';
@@ -16,12 +18,9 @@ function readFilters() {
 }
 
 function ThemeButton() {
-  const [theme, setTheme] = useState(() => document.documentElement.dataset.theme ?? 'light');
-
   function toggleTheme() {
-    const next = theme === 'light' ? 'dark' : 'light';
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
-    setTheme(next);
     try {
       localStorage.setItem('awesome-ui-sdk-theme', next);
     } catch {
@@ -30,20 +29,24 @@ function ThemeButton() {
   }
 
   return (
-    <Button className="theme-button" aria-label="Toggle color theme" onClick={toggleTheme} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}>
-      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        {theme === 'light' ? <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" /></> : <path d="M20.5 13.2A8.5 8.5 0 0 1 10.8 3.5a8.5 8.5 0 1 0 9.7 9.7Z" />}
+    <Button className="theme-button" aria-label="Toggle color theme" onClick={toggleTheme} title="Toggle light or dark theme">
+      <svg data-theme-icon="light" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" />
+      </svg>
+      <svg data-theme-icon="dark" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M20.5 13.2A8.5 8.5 0 0 1 10.8 3.5a8.5 8.5 0 1 0 9.7 9.7Z" />
       </svg>
     </Button>
   );
 }
 
-export function App() {
-  const [selection, setSelection] = useState(readFilters);
+export function App({ resources }: { resources: Resource[] }) {
+  const [selection, setSelection] = useState<{ query: string; category: Category | 'all' }>({ query: '', category: 'all' });
   const search = useRef<HTMLInputElement>(null);
-  const visibleResources = filterResources(selection.query, selection.category);
+  const visibleResources = filterResources(resources, selection.query, selection.category);
 
   useEffect(() => {
+    setSelection(readFilters());
     const onPopState = () => setSelection(readFilters());
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
