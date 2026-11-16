@@ -1,5 +1,6 @@
 export const categories = [
   { id: 'libraries', label: 'Libraries', heading: 'Component libraries' },
+  { id: 'adapters', label: 'Adapters', heading: 'Framework adapters' },
   { id: 'tools', label: 'Tools', heading: 'Tools' },
   { id: 'showcases', label: 'Showcases', heading: 'Examples and showcases' },
   { id: 'official', label: 'Official', heading: 'Official resources' },

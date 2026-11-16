@@ -28,21 +28,24 @@ test('search, category selection, clearing, and empty-state reset change the ren
 });
 
 test('a shared URL restores filters and keyboard arrows change category', async () => {
-  history.replaceState(null, '', '/?category=libraries&q=react');
+  history.replaceState(null, '', '/?category=adapters&q=angular');
   const user = userEvent.setup();
   render(<ResourceDirectory resources={resources} />);
-  expect((screen.getByRole('searchbox') as HTMLInputElement).value).toBe('react');
-  expect(screen.getByRole('heading', { name: 'Lenso UI' })).toBeTruthy();
-  expect(screen.queryByRole('heading', { name: 'ViteHub Kit' })).toBeNull();
-  const libraries = screen.getByRole('radio', { name: /^Libraries / });
-  libraries.focus();
+  expect((screen.getByRole('searchbox') as HTMLInputElement).value).toBe('angular');
+  expect(screen.getByRole('heading', { name: 'Framework adapters' })).toBeTruthy();
+  expect(screen.getByRole('heading', { name: 'ngx-ui-sdk' })).toBeTruthy();
+  expect(screen.queryByRole('heading', { name: 'ember-ui-sdk' })).toBeNull();
+  const adapters = screen.getByRole('radio', { name: /^Adapters / });
+  expect(adapters.getAttribute('aria-checked')).toBe('true');
+  adapters.focus();
   await user.keyboard('{ArrowRight}');
   expect(screen.getByRole('radio', { name: /^Tools / }).getAttribute('aria-checked')).toBe('true');
   await user.keyboard('{ArrowLeft}');
-  expect(libraries.getAttribute('aria-checked')).toBe('true');
+  expect(adapters.getAttribute('aria-checked')).toBe('true');
   await user.click(screen.getByRole('searchbox'));
   await user.keyboard('{Escape}');
-  expect(screen.getAllByRole('listitem')).toHaveLength(count('libraries'));
+  expect(screen.getAllByRole('listitem')).toHaveLength(count('adapters'));
+  expect(location.search).toBe('?category=adapters');
 });
 
 test('theme changes are visible and persist, and the search shortcut focuses the search field', async () => {

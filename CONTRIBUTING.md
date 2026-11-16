@@ -5,7 +5,7 @@ This list covers the ecosystem of [Vercel UI SDK](https://ui-sdk.dev/), develope
 ## Suggest a resource
 
 1. Check that the resource is not already listed.
-2. Choose the category that matches its main purpose: component libraries, tools, or examples and showcases.
+2. Choose the category that matches its main purpose: component libraries, framework adapters, tools, or examples and showcases.
 3. Link to the official project site or repository and add a short English description of its purpose and UI SDK integration.
 4. Include evidence of that integration in your pull request: public source imports, package dependencies, or explicit documentation. For a closed-source showcase, link to the live site's UI SDK attribution and say that source is unavailable.
 5. Explain what you tried and why you recommend it. Note known limitations, archived status, paid features, or release restrictions when relevant.
@@ -22,6 +22,7 @@ Keep entries alphabetical within community categories. Avoid star counts, versio
 ## What qualifies
 
 - Component libraries built with `@ui-sdk/core` or a UI SDK framework adapter.
+- Framework adapters that render UI SDK core primitives in another framework. Keep styled collections and extensions for an existing adapter under component libraries, and identify unofficial or experimental adapters explicitly.
 - Tools that inspect, debug, test, or otherwise support UI SDK applications specifically.
 - Runnable examples and applications demonstrating UI SDK usage.
 - Tutorials and references teaching a concrete UI SDK workflow.

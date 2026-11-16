@@ -1,6 +1,6 @@
 # Awesome UI SDK [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> A curated list of component libraries, tools, and examples for [Vercel UI SDK](https://ui-sdk.dev/).
+> A curated list of component libraries, framework adapters, tools, and examples for [Vercel UI SDK](https://ui-sdk.dev/).
 
 [UI SDK](https://github.com/vercel-labs/ui) provides a framework-free TypeScript core for UI behaviors, with adapters for React, Vue, Svelte, Solid, and Web Components. This list covers that project's ecosystem.
 
@@ -12,6 +12,7 @@ An independent community list, unaffiliated with Vercel.
 
 - [Official resources](#official-resources)
 - [Component libraries](#component-libraries)
+- [Framework adapters](#framework-adapters)
 - [Tools](#tools)
 - [Examples and showcases](#examples-and-showcases)
 - [Selection criteria](#selection-criteria)
@@ -29,17 +30,20 @@ An independent community list, unaffiliated with Vercel.
 ## Component libraries
 
 - [audio/ui](https://www.audio-ui.dev/) - Audio controls with custom UI SDK primitives for knobs, faders, pads, and other audio interfaces, with React, Vue, Svelte, and Web Components adapters. Audio processing uses the library's own engine. [Source](https://github.com/ouestlabs/audio-ui) · [UI SDK integration](https://github.com/ouestlabs/audio-ui/blob/main/packages/primitives/src/knob/knob.ts).
-- [ember-ui-sdk](https://dhaulagiri.github.io/ui-sdk-ember/) - Unofficial, experimental Ember adapter that renders UI SDK core primitives as unstyled Glimmer components. [Source](https://github.com/Dhaulagiri/ui-sdk-ember) · [UI SDK integration](https://github.com/Dhaulagiri/ui-sdk-ember/blob/main/packages/ember-ui-sdk/src/dialog/dialog.gts).
 - [Eskais UI](https://github.com/p-otero/eskais-ui) - React components built on UI SDK with semantic theme tokens and agent support, distributed through a shadcn-style registry. In development.
 - [HextaUI (UI SDK collection)](https://hextaui.com/docs/ui-sdk-color-picker) - Styled React components in HextaUI's dedicated UI SDK collection, including color picker, token input, tree, and timeline. Other parts of the library use Base UI. [Source](https://github.com/preetsuthar17/hextaui/tree/main/components/ui).
 - [Keyframery](https://keyframery.com/) - Animated React components built on UI SDK, with plain CSS motion styles and a shadcn-compatible registry. [Source](https://github.com/keyframery/keyframery).
 - [Lenso UI](https://ui.lenso.dev/) - React components with StyleX styling, glass materials, and UI SDK interactions. [Source](https://github.com/LioRael/lenso-ui) · [UI SDK dependencies](https://github.com/LioRael/lenso-ui/blob/main/packages/ui/package.json).
-- [ngx-ui-sdk](https://efuturetoday.github.io/ui-sdk-angular/) - Unofficial, experimental Angular adapter exposing UI SDK core primitives as directives on application markup, with optional themes. [Source](https://github.com/efuturetoday/ui-sdk-angular) · [UI SDK integration](https://github.com/efuturetoday/ui-sdk-angular/blob/main/projects/core/dialog/src/dialog.ts).
 - [Sadu](https://sadu-ui.pages.dev/) - React components built on UI SDK with Al Sadu weaving-inspired styles, English and Arabic labels, and right-to-left layouts, distributed through a shadcn registry. [Source](https://github.com/y0u-0/sadu-ui) · [UI SDK integration](https://github.com/y0u-0/sadu-ui/blob/main/src/sadu/sadu-switch.tsx).
 - [SPEC-01 Hardware](https://spec-01.vercel.app/) - Hardware-inspired React components and device examples built on UI SDK behaviors, distributed through a shadcn-compatible registry. [Source and integration details](https://github.com/shuding/spec-01).
 - [ui-sdk-elements](https://jagreehal.github.io/ui-sdk-elements/) - Themed UI SDK Web Components and custom primitives, with an on-demand loader and a Vite plugin for building component CDNs. [Source](https://github.com/jagreehal/ui-sdk-elements) · [UI SDK integration](https://github.com/jagreehal/ui-sdk-elements/blob/main/src/components/step-grid.ts).
 - [UISet](https://uiset.dev/) - Styled React components, themes, kits, and page templates built on UI SDK, installable through a shadcn registry. [Source](https://github.com/superzero11/uiset) · [UI SDK integration](https://github.com/superzero11/uiset/blob/main/registry/uiset/ui/button.tsx).
 - [ViteHub Kit](https://github.com/vite-hub/vitehub/tree/main/packages/kit) - Additional headless Vue parts, a Nuxt module, and CSS styles for UI SDK. [Integration details](https://github.com/vite-hub/vitehub/blob/main/packages/kit/README.md).
+
+## Framework adapters
+
+- [ember-ui-sdk](https://dhaulagiri.github.io/ui-sdk-ember/) - Unofficial, experimental Ember adapter that renders UI SDK core primitives as unstyled Glimmer components. [Source](https://github.com/Dhaulagiri/ui-sdk-ember) · [UI SDK integration](https://github.com/Dhaulagiri/ui-sdk-ember/blob/main/packages/ember-ui-sdk/src/dialog/dialog.gts).
+- [ngx-ui-sdk](https://efuturetoday.github.io/ui-sdk-angular/) - Unofficial, experimental Angular adapter exposing UI SDK core primitives as directives on application markup, with optional themes. [Source](https://github.com/efuturetoday/ui-sdk-angular) · [UI SDK integration](https://github.com/efuturetoday/ui-sdk-angular/blob/main/projects/core/dialog/src/dialog.ts).
 
 ## Tools
 

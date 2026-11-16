@@ -81,7 +81,7 @@ export function ResourceDirectory({ resources }: { resources: Resource[] }) {
         <section className="intro" aria-labelledby="page-title">
           <h1 id="page-title">Good things, built with<br className="desktop-break" /> UI SDK.</h1>
           <div className="intro-bottom">
-            <p>Component libraries, tools, and experiments from the UI SDK community.</p>
+            <p>Component libraries, framework adapters, tools, and examples from the UI SDK community.</p>
             <a className="primary-link" href={`${repository}/blob/main/CONTRIBUTING.md`}>Submit a resource</a>
           </div>
         </section>

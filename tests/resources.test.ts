@@ -29,3 +29,12 @@ test('search combines words, ignores case and whitespace, and intersects with th
     expect(filterResources(resources, '   ', category.id).every((resource) => resource.category === category.id)).toBe(true);
   }
 });
+
+test('framework adapters are parsed into their own category and excluded from libraries', () => {
+  const adapters = filterResources(resources, '', 'adapters');
+  expect(adapters.map((resource) => resource.name)).toEqual(['ember-ui-sdk', 'ngx-ui-sdk']);
+  expect(filterResources(resources, 'framework angular', 'adapters').map((resource) => resource.name)).toEqual(['ngx-ui-sdk']);
+  for (const adapter of adapters) {
+    expect(filterResources(resources, adapter.name, 'libraries')).toEqual([]);
+  }
+});
