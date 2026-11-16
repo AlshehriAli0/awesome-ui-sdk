@@ -57,7 +57,7 @@ General UI libraries and tools without a demonstrated UI SDK integration are out
 
 Suggest a resource or improve an entry through a pull request. Include evidence of its UI SDK integration and follow the [contribution guidelines](CONTRIBUTING.md).
 
-To run the searchable resource website locally, see [website development](website/README.md).
+To run the searchable resource website locally, see [development instructions](CONTRIBUTING.md#developing-the-website).
 
 ## License
 

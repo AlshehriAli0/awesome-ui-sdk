@@ -34,6 +34,31 @@ Do not describe an entire project as built on UI SDK when the evidence only cove
 
 Fixes for descriptions, broken links, renamed projects, and discontinued integrations are welcome. Include an official announcement or source evidence explaining the change.
 
+## Developing the website
+
+Use Bun 1.4.4 from the repository root:
+
+```sh
+bun install --frozen-lockfile
+bun run dev
+bun run test
+bun run build
+bun run preview
+```
+
+The Next.js site has one source tree:
+
+- `src/app/`: routes, metadata, global styles, robots, sitemap, and the social image.
+- `src/components/`: the interactive resource directory, resource list, and UI SDK agent bridge.
+- `src/lib/`: README parsing, filtering, server-side content loading, and site metadata.
+- `tests/`: component, agent, server-rendering, and resource tests.
+
+Use kebab-case for source files and directories, PascalCase for React components, and Next.js's required route filenames. Keep the curated entries in `README.md`; the server reads them during the build and pre-renders the complete collection. Search and category filters run in the browser and restore shared query parameters after hydration. Filtered URLs canonicalize to the homepage.
+
+Follow the visual language of [ui-sdk.dev](https://ui-sdk.dev/): Geist typography, neutral surfaces, square controls, fine dividers, and blue links. Preserve light/dark themes, keyboard navigation, mobile layout, and the UI SDK agent bridge when changing components.
+
+Vercel deploys `main` to [awesome-ui-sdk.dev](https://awesome-ui-sdk.dev/), running tests before the production build. GitHub Actions checks every push to `main` and every pull request. Cloudflare manages DNS; Vercel serves HTTPS and redirects `www` to the apex domain. Dependencies and the bundled Geist font retain their own licenses.
+
 ## Licensing
 
 By submitting a contribution, you agree to release your contribution to this list under [CC0 1.0 Universal](LICENSE). This does not change the license of any linked resource.

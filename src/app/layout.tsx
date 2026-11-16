@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import '@fontsource-variable/geist';
-import '../website/src/styles.css';
-import { AgentBridge } from '../website/src/AgentBridge';
-import { siteDescription, siteTitle, siteUrl } from '../website/src/site';
+import './globals.css';
+import { AgentBridge } from '../components/agent-bridge';
+import { siteDescription, siteTitle, siteUrl } from '../lib/site';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

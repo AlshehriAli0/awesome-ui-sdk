@@ -5,8 +5,8 @@ import { Button } from '@ui-sdk/react/button';
 import { Input, InputClear, InputGroup } from '@ui-sdk/react/input';
 import { SegmentedControl, SegmentedControlItem } from '@ui-sdk/react/segmented-control';
 import { useShortcut } from '@ui-sdk/react/shortcuts';
-import { categories, filterResources, type Category, type Resource } from './resources';
-import { ResourceList } from './ResourceList';
+import { categories, filterResources, type Category, type Resource } from '../lib/resources';
+import { ResourceList } from './resource-list';
 
 const repository = 'https://github.com/LioRael/awesome-ui-sdk';
 const filters = [{ id: 'all', label: 'All resources' }, ...categories] as const;
@@ -40,7 +40,7 @@ function ThemeButton() {
   );
 }
 
-export function App({ resources }: { resources: Resource[] }) {
+export function ResourceDirectory({ resources }: { resources: Resource[] }) {
   const [selection, setSelection] = useState<{ query: string; category: Category | 'all' }>({ query: '', category: 'all' });
   const search = useRef<HTMLInputElement>(null);
   const visibleResources = filterResources(resources, selection.query, selection.category);

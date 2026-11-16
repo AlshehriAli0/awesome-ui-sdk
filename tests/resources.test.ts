@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
-import { categories, filterResources, parseResources } from './resources';
-import { resources } from './content.server';
+import { categories, filterResources, parseResources } from '../src/lib/resources';
+import { resources } from '../src/lib/resource-content';
 
 test('the collection includes the supplied ecosystem projects once, with valid links', () => {
   expect(resources.length).toBeGreaterThan(0);

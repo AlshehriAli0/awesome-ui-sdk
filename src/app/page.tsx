@@ -1,7 +1,7 @@
-import { App } from '../website/src/App';
-import { resources } from '../website/src/content.server';
-import { categories } from '../website/src/resources';
-import { siteDescription, siteUrl } from '../website/src/site';
+import { ResourceDirectory } from '../components/resource-directory';
+import { resources } from '../lib/resource-content';
+import { categories } from '../lib/resources';
+import { siteDescription, siteUrl } from '../lib/site';
 
 export default function HomePage() {
   const collection = {
@@ -23,7 +23,7 @@ export default function HomePage() {
 
   return (
     <>
-      <App resources={resources} />
+      <ResourceDirectory resources={resources} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collection).replace(/</g, '\\u003c') }} />
     </>
   );

@@ -1,4 +1,4 @@
-import { categories, type Resource } from './resources';
+import { categories, type Resource } from '../lib/resources';
 
 export function ResourceList({ resources }: { resources: Resource[] }) {
   return categories.map((category) => {
