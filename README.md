@@ -28,6 +28,7 @@ An independent community list, unaffiliated with Vercel.
 
 ## Component libraries
 
+- [HextaUI (UI SDK collection)](https://hextaui.com/docs/ui-sdk-color-picker) - Styled React components in HextaUI's dedicated UI SDK collection, including color picker, token input, tree, and timeline. Other parts of the library use Base UI. [Source](https://github.com/preetsuthar17/hextaui/tree/main/components/ui).
 - [Lenso UI](https://ui.lenso.dev/) - React components with StyleX styling, glass materials, and UI SDK interactions. [Source](https://github.com/LioRael/lenso-ui) · [UI SDK dependencies](https://github.com/LioRael/lenso-ui/blob/main/packages/ui/package.json).
 - [SPEC-01 Hardware](https://spec-01.vercel.app/) - Hardware-inspired React components and device examples built on UI SDK behaviors, distributed through a shadcn-compatible registry. [Source and integration details](https://github.com/shuding/spec-01).
 - [ViteHub Kit](https://github.com/vite-hub/vitehub/tree/main/packages/kit) - Additional headless Vue parts, a Nuxt module, and CSS styles for UI SDK. [Integration details](https://github.com/vite-hub/vitehub/blob/main/packages/kit/README.md).

@@ -30,6 +30,8 @@ A similarly named package, a copied agent skill, or a planned migration does not
 
 Do not describe an entire project as built on UI SDK when the evidence only covers one example or a subset of its controls. Distinguish source-verified integrations from live-site attribution, and keep compatibility claims limited to what the project documents.
 
+For libraries using multiple UI primitives, list the UI SDK collection once under component libraries. Name the collection explicitly, link directly to its documentation or source, and describe its scope. Do not create a separate entry for every component.
+
 ## Corrections and removals
 
 Fixes for descriptions, broken links, renamed projects, and discontinued integrations are welcome. Include an official announcement or source evidence explaining the change.
