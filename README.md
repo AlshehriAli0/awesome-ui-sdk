@@ -6,7 +6,7 @@
 
 An independent community list, unaffiliated with Vercel.
 
-[Browse and search the collection](https://liorael.github.io/awesome-ui-sdk/).
+[Browse and search the collection](https://awesome-ui-sdk.dev/).
 
 ## Contents
 

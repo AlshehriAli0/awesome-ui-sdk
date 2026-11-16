@@ -14,7 +14,9 @@ bun run preview
 
 Vite writes the static site to `dist/`. Deploy that directory to any static host. The page uses query parameters for shareable search and category filters; it needs no server or credentials.
 
-The GitHub Actions workflow tests and builds changes, then deploys `main` to GitHub Pages. Pull requests run checks without deploying. Relative asset URLs allow the same build to run under the repository's Pages subdirectory.
+The site is hosted on Vercel at [awesome-ui-sdk.dev](https://awesome-ui-sdk.dev/). Vercel is connected to this GitHub repository and deploys `main` to production. `vercel.json` runs tests before building and publishes `dist/`. GitHub Actions also checks tests and builds for pull requests and changes to `main`; it does not deploy the site.
+
+Cloudflare manages the domain and DNS. The apex A records use Vercel's recommended addresses, and `www` uses the project's Vercel DNS CNAME with a 308 redirect to the apex domain. Records are DNS-only, so Vercel serves HTTPS directly. Read the current project domain settings in Vercel before changing DNS targets.
 
 ## Design direction
 
