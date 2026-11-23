@@ -1,4 +1,4 @@
-import { categories, type Resource } from '../lib/resources';
+import { categories, frameworks, type Resource } from '../lib/resources';
 import { studyResourceId } from '../lib/featured';
 import { InkText } from './atlas/ink-text';
 import { InkDetail } from './atlas/ink-detail';
@@ -21,11 +21,13 @@ export function ResourceList({ resources, located }: { resources: Resource[]; lo
           {entries.map((resource) => {
             const id = studyResourceId(resource.name);
             const isRepository = resource.url.startsWith('https://github.com/');
+            const runtimeLabels = frameworks.filter(({ id }) => resource.frameworks.includes(id)).map(({ label }) => label);
             return (
               <li className="resource resource-row" id={id} key={resource.url} data-located={id && id === located ? '' : undefined}>
                 <div className="resource-info">
                   <h4><a href={resource.url}><InkText>{resource.name}</InkText></a></h4>
                   <p>{resource.description}</p>
+                  {runtimeLabels.length > 0 && <div className="resource-frameworks">{runtimeLabels.join(' · ')}</div>}
                 </div>
                 <div className="links resource-links">
                   <a href={resource.url} aria-label={`${isRepository ? 'Repository' : 'Website'} for ${resource.name}`}>
