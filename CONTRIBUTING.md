@@ -10,12 +10,15 @@ This list covers the ecosystem of [Vercel UI SDK](https://ui-sdk.dev/), develope
 4. Include evidence of that integration in your pull request: public source imports, package dependencies, or explicit documentation. For a closed-source showcase, link to the live site's UI SDK attribution and say that source is unavailable.
 5. Explain what you tried and why you recommend it. Note known limitations, archived status, paid features, or release restrictions when relevant.
 6. Disclose your connection to the project, including when you are its author or maintainer.
+7. Add framework metadata based on the resource's supported UI runtimes. For a library or tool, use its documented integration targets. For a demo or guide, tag the frameworks it shows. Leave the metadata out when the runtime is unclear.
 
 Use this format, adding a source or demo link when available:
 
 ```markdown
-- [Project name](https://project.example/) - What it provides and how it uses UI SDK. [Source](https://github.com/owner/project).
+- [Project name](https://project.example/) - What it provides and how it uses UI SDK. [Source](https://github.com/owner/project). <!-- frameworks: react web-components -->
 ```
+
+Separate framework IDs with spaces. The Registry recognizes `react`, `vue`, `svelte`, `solid`, `web-components`, `angular`, `ember`, and `octane`. A React resource can run in Next.js or Vite and still uses the `react` label.
 
 Keep entries alphabetical within community categories. Avoid star counts, version numbers, promotional claims, tracking links, and duplicate entries across categories.
 
