@@ -48,6 +48,34 @@ test('a shared URL restores filters and keyboard arrows change category', async 
   expect(location.search).toBe('?category=adapters');
 });
 
+test('the framework picker combines with category and search and restores shared URLs', async () => {
+  history.replaceState(null, '', '/?category=libraries&framework=vue');
+  const user = userEvent.setup();
+  render(<ResourceDirectory resources={resources} />);
+  const framework = screen.getByRole('combobox', { name: 'Framework' });
+  expect(framework.textContent).toBe('Vue');
+  expect(screen.getByRole('heading', { name: 'audio/ui' })).toBeTruthy();
+  expect(screen.queryByRole('heading', { name: 'Lenso UI' })).toBeNull();
+
+  await user.type(screen.getByRole('searchbox'), 'lenso');
+  expect(screen.getByText('No matching resources.')).toBeTruthy();
+  await user.click(framework);
+  await user.click(await screen.findByRole('option', { name: 'React' }));
+  expect(framework.textContent).toBe('React');
+  expect(screen.getByRole('heading', { name: 'Lenso UI' })).toBeTruthy();
+  expect(location.search).toBe('?category=libraries&framework=react&q=lenso');
+
+  await user.click(framework);
+  await user.click(await screen.findByRole('option', { name: 'All frameworks' }));
+  expect(location.search).toBe('?category=libraries&q=lenso');
+
+  act(() => {
+    history.replaceState(null, '', '/?framework=unsupported');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  });
+  expect(framework.textContent).toBe('All frameworks');
+});
+
 test('theme changes are visible and persist, and the search shortcut focuses the search field', async () => {
   const user = userEvent.setup();
   render(<ResourceDirectory resources={resources} />);
@@ -60,11 +88,11 @@ test('theme changes are visible and persist, and the search shortcut focuses the
   expect(document.activeElement).toBe(screen.getByRole('searchbox'));
 });
 
-test('the agent can find named controls and search, select a category, change the theme, and reset', async () => {
+test('the agent can find named controls and search, filter, change the theme, and reset', async () => {
   render(<ResourceDirectory resources={resources} />);
   const snapshot = agent.snapshot().filter((entry) => !entry.offPage && entry.component !== 'more');
   for (const entry of snapshot) expect(entry.label).toBeTruthy();
-  expect(snapshot.map((entry) => entry.label)).toEqual(expect.arrayContaining(['Search resources', 'Resource category', 'Toggle color theme']));
+  expect(snapshot.map((entry) => entry.label)).toEqual(expect.arrayContaining(['Search resources', 'Resource category', 'Framework', 'Toggle color theme']));
 
   let result;
   await act(async () => {
@@ -90,6 +118,12 @@ test('the agent can find named controls and search, select a category, change th
   });
   expect(result).toMatchObject({ ok: true });
   expect(screen.getAllByRole('listitem')).toHaveLength(resources.length);
+
+  await act(async () => {
+    result = await agent.act({ steps: [{ ref: 'Framework', action: 'setValue', args: ['vue'] }] });
+  });
+  expect(result).toMatchObject({ ok: true });
+  expect(screen.getAllByRole('listitem')).toHaveLength(resources.filter((resource) => resource.frameworks.includes('vue')).length);
 });
 
 test('server HTML includes every curated resource without browser initialization', () => {
@@ -105,6 +139,7 @@ test('server HTML includes every curated resource without browser initialization
 });
 
 test('the hero opens the single Registry search and a featured project can reveal a filtered-out entry', async () => {
+  history.replaceState(null, '', '/?framework=react');
   const user = userEvent.setup();
   render(<ResourceDirectory resources={resources} />);
   expect(screen.getAllByRole('searchbox')).toHaveLength(1);

@@ -4,8 +4,9 @@ import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { Button } from '@ui-sdk/react/button';
 import { Input, InputClear, InputGroup } from '@ui-sdk/react/input';
 import { SegmentedControl, SegmentedControlItem } from '@ui-sdk/react/segmented-control';
+import { Select, SelectContent, SelectLabel, SelectTrigger, SelectValue } from '@ui-sdk/react/select';
 import { useShortcut } from '@ui-sdk/react/shortcuts';
-import { categories, filterResources, type Category, type Resource } from '../lib/resources';
+import { categories, filterResources, frameworkFilters, type Category, type FrameworkFilter, type Resource } from '../lib/resources';
 import { ResourceList } from './resource-list';
 import { featuredStudies, studyResourceId } from '../lib/featured';
 import { InkText } from './atlas/ink-text';
@@ -17,11 +18,21 @@ import { drawInkWash } from './atlas/ink-wash';
 
 const repository = 'https://github.com/LioRael/awesome-ui-sdk';
 const filters = [{ id: 'all', label: 'All resources' }, ...categories] as const;
+const frameworkOptions = frameworkFilters.map(({ id, label }) => ({ value: id, label }));
 
-function readFilters() {
+type DirectoryFilters = {
+  query: string;
+  category: Category | 'all';
+  framework: FrameworkFilter;
+};
+
+const defaultFilters: DirectoryFilters = { query: '', category: 'all', framework: 'all' };
+
+function readFilters(): DirectoryFilters {
   const params = new URLSearchParams(location.search);
   const category = filters.find((filter) => filter.id === params.get('category'))?.id ?? 'all';
-  return { query: params.get('q') ?? '', category };
+  const framework = frameworkFilters.find((filter) => filter.id === params.get('framework'))?.id ?? 'all';
+  return { query: params.get('q') ?? '', category, framework };
 }
 
 function ThemeButton() {
@@ -109,12 +120,13 @@ function FeaturedStudies({
 }
 
 export function ResourceDirectory({ resources }: { resources: Resource[] }) {
-  const [selection, setSelection] = useState<{ query: string; category: Category | 'all' }>({ query: '', category: 'all' });
+  const [selection, setSelection] = useState<DirectoryFilters>(defaultFilters);
   const [located, setLocated] = useState<{ id: string; focus: boolean }>();
   const shell = useRef<HTMLDivElement>(null);
   const registry = useRef<HTMLElement>(null);
   const search = useRef<HTMLInputElement>(null);
-  const visibleResources = filterResources(resources, selection.query, selection.category);
+  const frameworkResources = selection.framework === 'all' ? resources : filterResources(resources, '', 'all', selection.framework);
+  const visibleResources = filterResources(frameworkResources, selection.query, selection.category);
   const featured = featuredStudies(resources);
 
   useEffect(() => {
@@ -125,6 +137,7 @@ export function ResourceDirectory({ resources }: { resources: Resource[] }) {
       if (resource) {
         if (!filterResources([resource], next.query, 'all').length) next.query = '';
         if (next.category !== 'all') next.category = resource.category;
+        if (next.framework !== 'all' && !resource.frameworks.includes(next.framework)) next.framework = 'all';
       }
       setSelection(next);
       setLocated(resource ? { id, focus: false } : undefined);
@@ -164,14 +177,17 @@ export function ResourceDirectory({ resources }: { resources: Resource[] }) {
   useShortcut('/', focusSearch);
   useShortcut('mod+k', focusSearch);
 
-  function updateSelection(query: string, category: Category | 'all', targetId?: string) {
-    setSelection({ query, category });
+  function updateSelection(next: DirectoryFilters, targetId?: string) {
+    const { query, category, framework } = next;
+    setSelection(next);
     setLocated(targetId ? { id: targetId, focus: true } : undefined);
     const url = new URL(location.href);
     if (query) url.searchParams.set('q', query);
     else url.searchParams.delete('q');
     if (category !== 'all') url.searchParams.set('category', category);
     else url.searchParams.delete('category');
+    if (framework !== 'all') url.searchParams.set('framework', framework);
+    else url.searchParams.delete('framework');
     if (targetId) url.hash = targetId;
     else if (url.hash.startsWith('#resource-')) url.hash = '#directory';
     if (targetId && location.hash !== url.hash) history.pushState(null, '', url);
@@ -183,7 +199,8 @@ export function ResourceDirectory({ resources }: { resources: Resource[] }) {
     if (!id) return;
     const query = filterResources([resource], selection.query, 'all').length ? selection.query : '';
     const category = selection.category === 'all' ? 'all' : resource.category;
-    updateSelection(query, category, id);
+    const framework = selection.framework !== 'all' && resource.frameworks.includes(selection.framework) ? selection.framework : 'all';
+    updateSelection({ query, category, framework }, id);
   }
 
   return (
@@ -229,21 +246,31 @@ export function ResourceDirectory({ resources }: { resources: Resource[] }) {
             <div role="search" aria-label="Search the registry">
               <InputGroup className="index-search" aria-label="Search actions">
                 <InkDetail kind="search" />
-                <Input id="index-search" ref={search} type="search" aria-label="Search resources" aria-controls="resources" placeholder={`Search ${resources.length} resources`} value={selection.query} onValueChange={(value) => updateSelection(value, selection.category)} onKeyDown={(event) => { if (event.key === 'Escape') updateSelection('', selection.category); }} />
+                <Input id="index-search" ref={search} type="search" aria-label="Search resources" aria-controls="resources" placeholder={`Search ${resources.length} resources`} value={selection.query} onValueChange={(query) => updateSelection({ ...selection, query })} onKeyDown={(event) => { if (event.key === 'Escape') updateSelection({ ...selection, query: '' }); }} />
                 <InputClear aria-label="Clear search" className="clear-search">Clear</InputClear>
               </InputGroup>
+            </div>
+            <div className="framework-filter">
+              <Select items={frameworkOptions} value={selection.framework} onValueChange={(framework) => updateSelection({ ...selection, framework: framework ?? 'all' })}>
+                <SelectLabel className="framework-label">Framework</SelectLabel>
+                <SelectTrigger className="framework-trigger">
+                  <SelectValue />
+                  <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="m2 4 4 4 4-4" stroke="currentColor" strokeWidth="1.4" /></svg>
+                </SelectTrigger>
+                <SelectContent className="framework-options" align="start" sideOffset={5} />
+              </Select>
             </div>
             <SegmentedControl aria-label="Resource category" className="filters" value={selection.category} onValueChange={(value) => {
               const category = filters.find((filter) => filter.id === value);
               if (!category) return;
               if ((registry.current?.getBoundingClientRect().top ?? 0) < 0) registry.current?.scrollIntoView?.({ block: 'start' });
-              updateSelection(selection.query, category.id);
+              updateSelection({ ...selection, category: category.id });
             }}>
               {filters.map((filter) => (
                 <SegmentedControlItem value={filter.id} key={filter.id}>
                   <InkDetail kind="tab" selected={selection.category === filter.id} />
                   <span className="filter-label"><InkText>{filter.id === 'official' ? 'Official docs' : filter.label}</InkText></span>{' '}
-                  <span className="filter-count">{filter.id === 'all' ? resources.length : resources.filter((resource) => resource.category === filter.id).length}</span>
+                  <span className="filter-count">{filter.id === 'all' ? frameworkResources.length : frameworkResources.filter((resource) => resource.category === filter.id).length}</span>
                 </SegmentedControlItem>
               ))}
             </SegmentedControl>
@@ -259,8 +286,8 @@ export function ResourceDirectory({ resources }: { resources: Resource[] }) {
               {visibleResources.length ? <ResourceList resources={visibleResources} located={located?.id} /> : (
                 <div className="empty-state">
                   <h3>No matching resources.</h3>
-                  <p>Try a different search or browse all categories.</p>
-                  <Button onClick={() => { updateSelection('', 'all'); search.current?.focus(); }}>Reset filters</Button>
+                  <p>Try a different search, framework, or category.</p>
+                  <Button onClick={() => { updateSelection(defaultFilters); search.current?.focus(); }}>Reset filters</Button>
                 </div>
               )}
             </div>

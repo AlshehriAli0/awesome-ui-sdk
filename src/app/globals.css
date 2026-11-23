@@ -79,6 +79,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 .index-guide h2 { font:800 clamp(1.85rem,12.8cqi,3.65rem)/.94 var(--display); letter-spacing:-.088em; margin:0 0 17px }
 .index-search { max-width:250px; min-height:39px; margin-bottom:14px; font-size:14px }
 .index-search .clear-search { position:relative; z-index:1; border:0; background:transparent; padding:3px 4px; font:12px var(--mono); color:var(--blue) }
+.framework-filter { max-width:250px; margin:0 0 12px }
+.framework-label { padding-inline:6px; color:var(--quiet); font:14px/1.4 var(--mono) }
+.framework-trigger { display:flex; justify-content:space-between; align-items:center; gap:10px; width:100%; min-height:40px; padding:7px 6px; border:0; border-bottom:1px solid var(--rule); background:transparent; text-align:left; font:14px/1.4 var(--mono) }
+.framework-trigger:hover,.framework-trigger[aria-expanded=true] { color:var(--blue) }
+.framework-options { z-index:5; width:var(--anchor-width, 220px); max-width:var(--available-width, calc(100vw - 36px)); max-height:var(--available-height, 260px); overflow:auto; padding:4px; border:1px solid var(--rule); background:var(--paper); color:var(--ink); box-shadow:2px 4px 0 var(--grain); font:14px/1.4 var(--mono) }
+.framework-options [role=option] { padding:7px 9px; cursor:pointer }
+.framework-options [data-selected] { color:var(--blue); font-weight:700 }
+.framework-options [data-highlighted] { background:var(--grain) }
 .filters { display:grid; gap:1px; max-width:250px }
 .filters button { position:relative; display:flex; justify-content:space-between; text-align:left; align-items:center; gap:14px; border:0; background:transparent; padding:8px 6px; font:14px var(--mono); white-space:nowrap }
 .filters button > .filter-count { color:var(--lead); font-size:12px; font-variant-numeric:tabular-nums }
@@ -96,6 +104,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 .resource:not(:last-child)::after { content:""; position:absolute; left:0; right:0; bottom:0; height:1px; pointer-events:none; background:repeating-linear-gradient(89deg,#6a5c462e 0,#61533f56 15px,transparent 17px,#766b5848 20px,#60574114 33px) }
 .resource h4 { font:800 19px/1.18 var(--display); letter-spacing:-.05em; margin:0 0 4px }
 .resource p { max-width:70ch; margin:0; color:var(--quiet); font-size:14px }
+.resource-frameworks { margin-top:4px; color:var(--lead); font:13px/1.5 var(--mono) }
 .resource .links { justify-content:flex-end; padding-top:4px }
 .resource .links a { text-decoration:underline; text-decoration-color:#2346b358; text-underline-offset:3px }
 .resource[data-located] { background:radial-gradient(ellipse 108% 69% at 12% 49%,#4550521a,#4b54520a 57%,transparent 76%); }

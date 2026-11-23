@@ -17,8 +17,22 @@ test('the collection includes the supplied ecosystem projects once, with valid l
 
 test('only curated category entries become resources; supporting links stay with their entry', () => {
   expect(parseResources(`## Tools\n- [Inspector](https://example.com/) - Inspect the bridge. [Source](https://github.com/example/tool).\n## Contributing\n- [Not a resource](https://example.com/contribute) - Contribute here.`)).toEqual([
-    { name: 'Inspector', url: 'https://example.com/', description: 'Inspect the bridge.', category: 'tools', links: [{ label: 'Source', url: 'https://github.com/example/tool' }] },
+    { name: 'Inspector', url: 'https://example.com/', description: 'Inspect the bridge.', category: 'tools', frameworks: [], links: [{ label: 'Source', url: 'https://github.com/example/tool' }] },
   ]);
+});
+
+test('framework metadata supports multiple runtimes without changing descriptions or links', () => {
+  const input = `## Tools\n- [Inspector](https://example.com/) - Inspect the bridge. <!-- frameworks: react vue react unknown -->\n- [Second tool](https://example.org/) - Second tool. [Source](https://github.com/example/tool). <!-- frameworks: web-components -->`;
+  const [first, second] = parseResources(input);
+  expect(first).toMatchObject({ description: 'Inspect the bridge.', frameworks: ['react', 'vue'], links: [] });
+  expect(second).toMatchObject({ description: 'Second tool.', frameworks: ['web-components'], links: [{ label: 'Source', url: 'https://github.com/example/tool' }] });
+});
+
+test('framework filtering intersects with search and category, including cross-framework resources', () => {
+  expect(filterResources(resources, 'audio', 'libraries', 'vue').map(({ name }) => name)).toEqual(['audio/ui']);
+  expect(filterResources(resources, 'audio', 'libraries', 'solid')).toEqual([]);
+  expect(filterResources(resources, '', 'adapters', 'octane').map(({ name }) => name)).toEqual(['ui-sdk-octane']);
+  expect(filterResources(resources, 'web', 'showcases', 'web-components').map(({ name }) => name)).toContain('Perpetual');
 });
 
 test('search combines words, ignores case and whitespace, and intersects with the category', () => {
