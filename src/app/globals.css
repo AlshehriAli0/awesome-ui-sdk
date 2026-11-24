@@ -56,7 +56,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visibl
 .toy-watch .ink-study { aspect-ratio:474/869; background-size:374.262% 102.071%; background-position:90.769% 77.778% }
 .toy:active .ink-study { translate:0 2px }
 .toy-name { display:block; margin-top:3px; padding:3px 5px; border:0; border-bottom:1px solid transparent; background:transparent; color:inherit; white-space:nowrap; font:12px/1.35 var(--mono) }
-.toy[aria-pressed=true] .toy-name,.knob-caption[aria-pressed=true] { color:var(--blue); border-bottom-color:var(--blue) }
+.toy[aria-pressed=true] .toy-name,.toy-name[aria-pressed=true] { color:var(--blue); border-bottom-color:var(--blue) }
+.featured-caption { min-height:32px; margin:4px auto 0; padding-inline:12px; border-bottom-color:var(--rule) }
 .knob-wrap { justify-self:center; display:grid; place-items:center; align-self:center }
 .knob { position:relative; display:grid; place-items:center; width:clamp(49px,6.7vw,90px); aspect-ratio:1; border-radius:50%; border:1px solid #242832; background:repeating-linear-gradient(77deg,#17294f 0 1.5px,#344f87 1.5px 4.5px); box-shadow:2px 4px #3d444852; cursor:ew-resize; touch-action:none; user-select:none }
 .knob::before { content:""; position:absolute; inset:-6% 0 10%; border:1px solid #26282d; border-radius:50%; background:radial-gradient(#243353 21%,transparent 26%) 0 0/3px 3px,#395eaa }
