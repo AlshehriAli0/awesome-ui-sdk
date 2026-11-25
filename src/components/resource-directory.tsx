@@ -83,7 +83,7 @@ function FeaturedStudies({
     <div className="ink-stage" role="group" aria-label="Featured projects">
       <canvas ref={wash} className="wash-field" width={512} height={312} aria-hidden="true" />
       <div className="plate" ref={plate}>
-        {featured.filter(({ toy }) => toy !== null).map((study) => study.toy === 'knob' ? (
+        {featured.map((study) => study.toy === 'knob' ? (
           <div className="knob-wrap" role="group" aria-label="audio/ui paper toy" key={study.id}>
             <PaperKnob onUse={() => setSelection(study.id)} />
             <Button className="toy-name" aria-pressed={selection === study.id} aria-controls="figure-details" onClick={() => setSelection(study.id)}>
@@ -98,11 +98,6 @@ function FeaturedStudies({
           </Button>
         ))}
       </div>
-      {featured.filter(({ toy }) => toy === null).map((study) => (
-        <Button className="toy-name featured-caption" key={study.id} aria-pressed={selection === study.id} aria-controls="figure-details" onClick={() => setSelection(study.id)}>
-          <InkText>{study.name}</InkText>
-        </Button>
-      ))}
       <section className="annotation figure-note" id="figure-details" aria-labelledby="figure-title">
         <InkDetail kind="top-rule" />
         <div aria-live="polite">
